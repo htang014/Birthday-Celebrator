@@ -229,6 +229,9 @@
     <Compile Include="check.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="events.txt">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="keypad.h">
       <SubType>compile</SubType>
     </Compile>
@@ -317,6 +320,9 @@
       <SubType>compile</SubType>
     </None>
     <None Include="src\ASF\mega\utils\status_codes.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="passwd.txt">
       <SubType>compile</SubType>
     </None>
   </ItemGroup>

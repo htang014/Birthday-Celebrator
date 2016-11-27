@@ -43,6 +43,12 @@ void Clock_Tick()
 	min = USART_Receive(1);
 	while (!USART_HasReceived(1));
 	sec = USART_Receive(1);
+	while (!USART_HasReceived(1));
+	dyear = USART_Receive(1);
+	while (!USART_HasReceived(1));
+	dmonth = USART_Receive(1);
+	while (!USART_HasReceived(1));
+	dday = USART_Receive(1);
 }
 
 void ClockSecTask()

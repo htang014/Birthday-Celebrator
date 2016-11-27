@@ -14,7 +14,7 @@
 unsigned char sec = 0, min = 0, hour = 0;
 unsigned char dday = 0, dmonth = 0, dyear = 0;
 
-char daysInMonth(char month, char year){
+unsigned char daysInMonth(char month, char year){
 	if (month == 1 || month == 3 || month == 5 || month == 7 ||
 		month == 8 || month == 10 || month == 12){
 			return 31;
@@ -98,13 +98,13 @@ char sendDate(char* str){
 		while (!USART_IsSendReady(1));
 		USART_Send(0xFF,1);
 		while (!USART_IsSendReady(1));
-		USART_Send(dday,1);
+		USART_Send(dyear,1);
 		while (!USART_HasTransmitted(1));
 		while (!USART_IsSendReady(1));
 		USART_Send(dmonth,1);
 		while (!USART_HasTransmitted(1));
 		while (!USART_IsSendReady(1));
-		USART_Send(dyear,1);
+		USART_Send(dday,1);
 		while (!USART_HasTransmitted(1));
 			
 		return 1;
