@@ -8,8 +8,8 @@
 #include "usart_ATmega1284.h"
 
 //Receives a string from USART via RF protocol
-//Returns string or #/* if valid, else null
-void rf_receive(char* msg, char port){
+//Returns 1 if successful or 0 otherwise
+unsigned char rf_receive(char* msg, char port){
 	unsigned char rcvData = 0, chksm = 0, length = 0;
 
 	//Dummy signal
@@ -38,6 +38,12 @@ void rf_receive(char* msg, char port){
 	
 	if (!(checksum(msg, length) == rcvData)){
 		msg = 0;
+		return 0;
+	}
+	else{
+		delay_ms(1500);
+		USART_Flush(0);
+		return 1;
 	}
 	
 }

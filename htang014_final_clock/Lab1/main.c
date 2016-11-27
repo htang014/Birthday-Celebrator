@@ -71,6 +71,8 @@ void ClockPrint_Tick()
 	if(clkLCDEnable){	
 		sprintf(timeDisplay, "%02d:%02d:%02d", hour, min, sec);
 		LCD_WriteString(1, timeDisplay);
+		sprintf(timeDisplay, "%02d/%02d/%02d", dmonth, dday, dyear);
+		LCD_WriteString(17, timeDisplay);
 		LCD_Cursor(0);
 	}
 }
@@ -103,82 +105,71 @@ void Demo_Tick()
 		case PASSWD:
 		clkLCDEnable = 1;
 		
-		rf_receive(msg, 0);
+		if (!rf_receive(msg, 0))
+			return;
 			
 		if (msg[0] == '*'){
 			clkLCDEnable = 0;
-			delay_ms(1000);
-			USART_Flush(0);
 			code_mode = TIME;
 			break;
 		}
 		else if (msg[0] == '#'){
 			clkLCDEnable = 0;
-			delay_ms(1000);
-			USART_Flush(0);
-			code_mode = EVENTS;
+			code_mode = DATE;
 			break;
 		}
 		msg[CODE_SIZE] = '\0';
+		LCD_WriteString(10,msg);
 
-		char pass = 1;
-		for (char i = 0; i < CODE_SIZE; i++){
-			if (msg[i] > '9' || msg[i] < '0')
-				pass = 0;
-		}
-		
-		if (msg != "\0" && pass){
-			LCD_WriteString(17,msg);
-			delay_ms(1000);
-			USART_Flush(0);	
-		}
-		else{
-			return;
-		}
 		break;
 			
 		case TIME:
 		LCD_ClearScreen();
 		LCD_WriteString(1,"SET TIME");
-		rf_receive(msg,0);
+		
+		if (!rf_receive(msg,0))
+			return;
 		
 		if (msg[0] == '*'){
 			clkLCDEnable = 0;
 			code_mode = DATE;
-			LCD_ClearScreen();
 			break;
 		}
 		else if (msg[0] == '#'){
 			clkLCDEnable = 0;
 			code_mode = PASSWD;
-			LCD_ClearScreen();
 			break;
 		}
+		msg[6] = '\0';
 		
-		sendTime(msg);
+		if (sendTime(msg))
+			code_mode = PASSWD;
+
 		break;
 		
 		case DATE:
 		LCD_ClearScreen();
 		LCD_WriteString(1,"SET DATE");
-		rf_receive(msg,0);
+		
+		if (!rf_receive(msg,0)){
+			return;
+		}
 		
 		if (msg[0] == '*'){
 			clkLCDEnable = 0;
-			code_mode = EVENTS;
-			LCD_ClearScreen();
+			code_mode = PASSWD;
 			break;
 		}
 		else if (msg[0] == '#'){
 			clkLCDEnable = 0;
 			code_mode = TIME;
-			LCD_ClearScreen();
 			break;
 		}
-		sendDate(msg);
-		break;
-		case EVENTS:
-		code_mode = PASSWD;
+		msg[6] = '\0';
+		
+		if (sendDate(msg))
+			code_mode = PASSWD;
+		
 		break;
 	}
 	code_received = 1;

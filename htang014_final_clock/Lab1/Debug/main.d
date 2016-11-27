@@ -30,7 +30,7 @@ main.d main.o: .././main.c \
  C:\Users\Hanst\Desktop\FreeRTOS\Source\include/list.h \
  C:\Users\Hanst\Desktop\FreeRTOS\Source\include/croutine.h .././lcd.h \
  .././sr_transmit.h .././button.h .././serialRF.h .././check.h \
- .././usart_ATmega1284.h
+ .././usart_ATmega1284.h .././datetime.h
 
 e:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\4.9.2\include\stdint.h:
 
@@ -103,3 +103,5 @@ C:\Users\Hanst\Desktop\FreeRTOS\Source\include/croutine.h:
 .././check.h:
 
 .././usart_ATmega1284.h:
+
+.././datetime.h:

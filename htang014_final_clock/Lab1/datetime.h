@@ -31,7 +31,7 @@ unsigned char daysInMonth(char month, char year){
 
 char sendTime(char* str){
 	if (str != "\0"){
-		USART_Flush(0);
+		USART_Flush(1);
 		char hourStr[3];
 		char minStr[3];
 		char secStr[3];
@@ -42,7 +42,7 @@ char sendTime(char* str){
 		minStr[2] = '\0';
 		secStr[2] = '\0';
 
-		if (atoi(hourStr) < 24 && atoi(minStr) < 60 && atoi(secStr) < 60){
+		if (atoi(hourStr) < 25 && atoi(minStr) < 60 && atoi(secStr) < 60){
 			hour = atoi(hourStr);
 			min = atoi(minStr);
 			sec = atoi(secStr);
@@ -70,7 +70,7 @@ char sendTime(char* str){
 
 char sendDate(char* str){
 	if (str != "\0"){
-		USART_Flush(0);
+		USART_Flush(1);
 		char yearStr[3];
 		char monthStr[3];
 		char dayStr[3];

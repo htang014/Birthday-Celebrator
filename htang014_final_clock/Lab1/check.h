@@ -6,7 +6,7 @@
  */
 
 uint8_t checksum(char *x, size_t len)
-{
+{	
 	size_t i;
 	uint8_t h;
 	static const unsigned char T[256] = {
@@ -32,6 +32,6 @@ uint8_t checksum(char *x, size_t len)
 	h = T[x[0] % 256];
 	for (i = 1; i < len; ++i) 
 		h = T[h ^ x[i]];
-
+		
 	return h;
 }

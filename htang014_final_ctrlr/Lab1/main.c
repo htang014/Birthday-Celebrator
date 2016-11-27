@@ -18,7 +18,7 @@
 #include "delay.h"
 #include "serialRF.h"
 
-#define CODE_SIZE 4
+#define CODE_SIZE 6
 
 void Demo_Init()
 {
@@ -37,7 +37,7 @@ void Demo_Tick()
 		firstKey = GetKeypadKeyOnce();
 		
 	if (firstKey == '*' || firstKey == '#'){
-		for (char i = 0; i < 6; i++){
+		for (char i = 0; i < CODE_SIZE; i++){
 			rf_send(&firstKey, 1, 0);
 		}
 		
@@ -49,9 +49,9 @@ void Demo_Tick()
 	GetKeypadString(&keycode[1], CODE_SIZE-1);
 	keycode[CODE_SIZE] = '\0';
 	
-	for (char i = 0; i < 6; i++){
-		rf_send(keycode, 4, 0);
-		delay_ms(250);
+	for (char i = 0; i < 10; i++){
+		rf_send(keycode, CODE_SIZE, 0);
+		delay_ms(100);
 	}
 	
 	PORTC = 0xFF;

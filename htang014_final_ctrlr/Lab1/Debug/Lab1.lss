@@ -23,13 +23,13 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   9 .debug_frame  000005a0  00000000  00000000  00005ffc  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    0000e1eb  00000000  00000000  0000659c  2**0
+ 10 .debug_str    0000e1ff  00000000  00000000  0000659c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    0000182d  00000000  00000000  00014787  2**0
+ 11 .debug_loc    0000182d  00000000  00000000  0001479b  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000228  00000000  00000000  00015fb4  2**0
+ 12 .debug_ranges 00000228  00000000  00000000  00015fc8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_macro  000014c1  00000000  00000000  000161dc  2**0
+ 13 .debug_macro  000014c1  00000000  00000000  000161f0  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -751,7 +751,7 @@ void rf_send(char * message, char length, char port){
 
 0000050a <Demo_Init>:
 
-#define CODE_SIZE 4
+#define CODE_SIZE 6
 
 void Demo_Init()
 {
@@ -812,7 +812,7 @@ void Demo_Tick()
  546:	16 e0       	ldi	r17, 0x06	; 6
  548:	01 c0       	rjmp	.+2      	; 0x54c <Demo_Tick+0x30>
  54a:	16 e0       	ldi	r17, 0x06	; 6
-		for (char i = 0; i < 6; i++){
+		for (char i = 0; i < CODE_SIZE; i++){
 			rf_send(&firstKey, 1, 0);
  54c:	40 e0       	ldi	r20, 0x00	; 0
  54e:	61 e0       	ldi	r22, 0x01	; 1
@@ -825,7 +825,7 @@ void Demo_Tick()
 		firstKey = GetKeypadKeyOnce();
 		
 	if (firstKey == '*' || firstKey == '#'){
-		for (char i = 0; i < 6; i++){
+		for (char i = 0; i < CODE_SIZE; i++){
  558:	c9 f7       	brne	.-14     	; 0x54c <Demo_Tick+0x30>
 			rf_send(&firstKey, 1, 0);
 		}
@@ -840,24 +840,24 @@ void Demo_Tick()
 	keycode[0] = firstKey;
  560:	89 83       	std	Y+1, r24	; 0x01
 	GetKeypadString(&keycode[1], CODE_SIZE-1);
- 562:	63 e0       	ldi	r22, 0x03	; 3
+ 562:	65 e0       	ldi	r22, 0x05	; 5
  564:	70 e0       	ldi	r23, 0x00	; 0
  566:	ce 01       	movw	r24, r28
  568:	02 96       	adiw	r24, 0x02	; 2
  56a:	e7 de       	rcall	.-562    	; 0x33a <GetKeypadString>
 	keycode[CODE_SIZE] = '\0';
- 56c:	1d 82       	std	Y+5, r1	; 0x05
- 56e:	16 e0       	ldi	r17, 0x06	; 6
+ 56c:	1f 82       	std	Y+7, r1	; 0x07
+ 56e:	1a e0       	ldi	r17, 0x0A	; 10
 	
-	for (char i = 0; i < 6; i++){
-		rf_send(keycode, 4, 0);
+	for (char i = 0; i < 10; i++){
+		rf_send(keycode, CODE_SIZE, 0);
  570:	40 e0       	ldi	r20, 0x00	; 0
- 572:	64 e0       	ldi	r22, 0x04	; 4
+ 572:	66 e0       	ldi	r22, 0x06	; 6
  574:	ce 01       	movw	r24, r28
  576:	01 96       	adiw	r24, 0x01	; 1
  578:	74 df       	rcall	.-280    	; 0x462 <rf_send>
-		delay_ms(250);
- 57a:	8a ef       	ldi	r24, 0xFA	; 250
+		delay_ms(100);
+ 57a:	84 e6       	ldi	r24, 0x64	; 100
  57c:	90 e0       	ldi	r25, 0x00	; 0
  57e:	63 de       	rcall	.-826    	; 0x246 <delay_ms>
  580:	11 50       	subi	r17, 0x01	; 1
@@ -866,10 +866,10 @@ void Demo_Tick()
 	GetKeypadString(&keycode[1], CODE_SIZE-1);
 	keycode[CODE_SIZE] = '\0';
 	
-	for (char i = 0; i < 6; i++){
+	for (char i = 0; i < 10; i++){
  582:	b1 f7       	brne	.-20     	; 0x570 <Demo_Tick+0x54>
-		rf_send(keycode, 4, 0);
-		delay_ms(250);
+		rf_send(keycode, CODE_SIZE, 0);
+		delay_ms(100);
 	}
 	
 	PORTC = 0xFF;
